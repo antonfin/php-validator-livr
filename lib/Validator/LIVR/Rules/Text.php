@@ -18,7 +18,7 @@ class Text
 
         $modifiedAllowedValues = array();
         foreach ($allowedValues as $v) {
-            $modifiedAllowedValues[] = (string) $v;
+            $modifiedAllowedValues[] = is_bool($v) ? $v : (string) $v;
         }
 
         return function ($value) use ($modifiedAllowedValues) {
@@ -26,12 +26,18 @@ class Text
                 return;
             }
 
-            if (!\Validator\LIVR\Util::isStringOrNumber($value)) {
-                return 'FORMAT_ERROR';
-            }
+            if (is_bool($value)) {
+                if (! in_array($value, $modifiedAllowedValues, true)) {
+                    return 'NOT_ALLOWED_VALUE';
+                }
+            } else {
+                if (!\Validator\LIVR\Util::isStringOrNumber($value) && !is_bool($value)) {
+                    return 'FORMAT_ERROR';
+                }
 
-            if (! in_array((string) $value, $modifiedAllowedValues, true)) {
-                return 'NOT_ALLOWED_VALUE';
+                if (! in_array((string) $value, $modifiedAllowedValues, true)) {
+                    return 'NOT_ALLOWED_VALUE';
+                }
             }
 
             return;

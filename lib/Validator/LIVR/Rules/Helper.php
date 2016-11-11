@@ -22,7 +22,7 @@ class Helper
 
             $result = $validator->validate($nestedObject);
 
-            if ($result) {
+            if ($result !== false) {
                 $outputArr = $result;
                 return;
             } else {

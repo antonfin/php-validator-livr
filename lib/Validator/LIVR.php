@@ -169,7 +169,6 @@ class LIVR
                     $result[$fieldName] = $fieldResult;
                 }
             }
-
         }
 
         if (count($errors) > 0) {
